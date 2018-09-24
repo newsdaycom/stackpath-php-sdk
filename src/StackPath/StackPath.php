@@ -18,9 +18,15 @@ class StackPath
     * If you haven't declared the client_id and client_secret in the config above, it will be sourced from environment variables
     * @param String $stack_id ID for the stackpath stack
     */
-    public function __construct($stack_id)
+    public function __construct($stack_id, $client_id = false, $client_secret = false)
     {
-        $this->creds["stack_id"] = $stack_id;
+        if (!$client_id) {
+            $client_id = getenv("STACKPATH_ID");
+        }
+
+        if (!$client_secret) {
+            $client_secret = getenv("STACKPATH_SECRET");
+        }
 
         /** Instantiates Guzzle client with gateway as default root */
         $this->client = new \GuzzleHttp\Client([
@@ -28,14 +34,11 @@ class StackPath
           "timeout" => 30
         ]);
 
-        /** Use environment variables for client_id and secret if not supplied in $this->creds */
-        if (!isset($this->creds["client_id"])) {
-            $this->creds["client_id"] = getenv("STACKPATH_ID");
-        }
-
-        if (!isset($this->creds["client_secret"])) {
-            $this->creds["client_secret"] = getenv("STACKPATH_SECRET");
-        }
+        $this->creds = array_merge_recursive($this->creds, [
+          "stack_id" => $stack_id,
+          "client_id" => $client_id,
+          "client_secret" => $client_secret
+        ]);
 
         /** Retrive the auth token on instantiation */
         $this->token = $this->post("identity/v1/oauth2/token", ["json" => [

@@ -14,9 +14,15 @@ You can easily add this to your project by running
 
 ## Configuration
 
-For simplicity sake, we encourage you to set two environment variables, `STACKPATH_ID` and `STACKPATH_SECRET`. If you cannot do this you can update the $config with two strings, `"client_id"` and `"client_secret"`. The OAuth handshake happens on instantiation and the bearer token is provided in all requests by default.
+For simplicity sake, we encourage you to set two environment variables, `STACKPATH_ID` and `STACKPATH_SECRET`. If you cannot do this you can also provide the client_id and client_secret as parameters during instantiation. The OAuth handshake happens on instantiation and the bearer token is provided in all requests by default.
 
 ## Use
+
+To use Stackpath you must first instantiate the class and include your client_id, client_secret and stack_id;
+
+    $sp = new \StackPath\StackPath("9ad4bdfc-77ec-41bb-ac95-da137d837742", $CLIENT_ID, $CLIENT_SECRET);
+
+If you don't provide the $CLIENT_ID or $CLIENT_SECRET the class will fallback on your environment variables.
 
 There are request methods set up by default, `GET`, `POST`, `DELETE`, and `PUT`. These are all shorthand methods for the `request` method which handles all of the logic for Authorization, payload and returning the response as an object. The requests in this application are powered by Guzzle.
 
