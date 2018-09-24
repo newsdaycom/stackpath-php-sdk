@@ -6,6 +6,12 @@ Other abstraction methods will be forthcoming as we require it.
 
 This package is open source and we are open to pull requests for new features.
 
+## Install
+
+You can easily add this to your project by running
+
+    composer require newsdaycom/stackpath-php-sdk
+
 ## Configuration
 
 For simplicity sake, we encourage you to set two environment variables, `STACKPATH_ID` and `STACKPATH_SECRET`. If you cannot do this you can update the $config with two strings, `"client_id"` and `"client_secret"`. The OAuth handshake happens on instantiation and the bearer token is provided in all requests by default.
