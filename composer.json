@@ -2,8 +2,8 @@
     "name": "newsdaycom/stackpath-php-sdk",
     "description": "A PHP SDK for Stackpath",
     "type": "library",
-    "require": {
-        "guzzle/guzzle": "^3.9"
+    "require": {  
+        "guzzlehttp/guzzle": "^6.3"
     },
     "license": "MIT",
     "authors": [
@@ -11,5 +11,10 @@
             "name": "TC McCarthy",
             "email": "tc.mccarthy@newsday.com"
         }
-    ]
+    ],
+    "autoload": {
+      "psr-0": {
+        "StackPath": "src/"
+      }
+    }
 }
