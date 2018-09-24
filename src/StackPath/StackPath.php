@@ -9,18 +9,19 @@ namespace StackPath;
 class StackPath
 {
     public $gateway = "https://gateway.stackpath.com";
-    public $creds = [
-      "stack_id" => "9ad4bdfc-77ec-41bb-ac95-da137d837742"
-    ];
+    public $creds = [];
     public $debug = false;
 
     /**
     * Instantiates the client
     *
     * If you haven't declared the client_id and client_secret in the config above, it will be sourced from environment variables
+    * @param String $stack_id ID for the stackpath stack
     */
-    public function __construct()
+    public function __construct($stack_id)
     {
+        $this->creds["stack_id"] = $stack_id;
+
         /** Instantiates Guzzle client with gateway as default root */
         $this->client = new \GuzzleHttp\Client([
           "base_uri" => $this->gateway,
@@ -95,11 +96,9 @@ class StackPath
     * Maps $files array to object for removal
     * @param Array $files full URLs to paths for removal
     */
-    public function purge_files($fileList, $stack_id = false)
+    public function purge_files($fileList)
     {
-        if (!$stack_id) {
-            $stack_id = $this->creds["stack_id"];
-        }
+        $stack_id = $this->creds["stack_id"];
 
         $files = [];
 
