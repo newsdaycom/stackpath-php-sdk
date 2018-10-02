@@ -192,17 +192,23 @@ class StackPath
 
 
         $payload = array_merge_recursive($payload_defaults, $payload);
+        $success = true;
 
-        /** Fires the request */
-        $res = $this->client->request($method, $url, $payload);
 
+        try {
+            /** Fires the request */
+            $res = $this->client->request($method, $url, $payload);
+            // $response = json_decode($res->getBody()->getContents());
+        } catch (\Exception $e) {
+            $success = false;
+            $res = $e->getResponse();
+        }
 
         try {
             $response = json_decode($res->getBody()->getContents());
         } catch (\Exception $e) {
             $response = $res->getBody()->getContents();
         }
-
         return $response;
     }
 }
