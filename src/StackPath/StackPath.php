@@ -99,14 +99,18 @@ class StackPath
     * Maps $files array to object for removal
     * @param Array $files full URLs to paths for removal
     */
-    public function purge_files($fileList)
+    public function purge_files($fileList, $opts = [])
     {
         $stack_id = $this->creds["stack_id"];
 
         $files = [];
 
+        $opts = array_merge([
+          "recursive" => true,
+        ], $opts);
+
         foreach ($fileList as $file) {
-            $files[] = ["url" => $file];
+            $files[] = array_merge($opts, ["url" => $file]);
         }
 
         $purge_id = $this->post("cdn/v1/stacks/{$stack_id}/purge", ["json" => [
@@ -198,16 +202,23 @@ class StackPath
         try {
             /** Fires the request */
             $res = $this->client->request($method, $url, $payload);
-            // $response = json_decode($res->getBody()->getContents());
         } catch (\Exception $e) {
             $success = false;
             $res = $e->getResponse();
+            if ($this->debug) {
+                error_log("Request failed");
+                error_log(print_r($res->getBody()->getContents(), true));
+            }
         }
 
         try {
             $response = json_decode($res->getBody()->getContents());
         } catch (\Exception $e) {
             $response = $res->getBody()->getContents();
+            if ($this->debug) {
+                error_log("JSON decode failed");
+                error_log(print_r($response, true));
+            }
         }
         return $response;
     }
