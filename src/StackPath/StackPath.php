@@ -106,7 +106,7 @@ class StackPath
         $files = [];
 
         $opts = array_merge([
-          "recursive" => true,
+          "recursive" => false,
         ], $opts);
 
         foreach ($fileList as $file) {
